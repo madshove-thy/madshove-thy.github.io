@@ -1,0 +1,92 @@
+---
+title: "Research"
+pagetitle: "Research — Mads Fuglsang Hove"
+---
+
+My work asks how digital media reshape the relationship between political elites and
+citizens. Three strands run through it: how elites *target* and communicate, what
+citizens are *able to tell* about the content that reaches them, and how elite media
+strategy translates into public standing. A fourth, newer strand looks at what happens
+in the discussions themselves.
+
+## Political microtargeting
+
+::: {.theme}
+::: {.theme-kicker}
+Elite strategy
+:::
+
+Online political advertising lets parties address different voter groups with different
+messages, largely out of public view. My dissertation, *The Nature and Consequences of
+Online Political Microtargeting*, asks what parties actually do with that capacity and
+what follows from it.
+
+Rather than treating targeting as a black box, I use the targeting criteria parties
+themselves select as data. This yields a **targeting ideology** measure: an inference
+about how political elites perceive and sort the electorate, drawn from their own
+advertising choices. Across multi-party systems, the pattern that emerges is less
+sophisticated persuasion of swing voters than reinforcement of existing constituencies —
+parties largely preach to their own choirs.
+
+The work is comparative as well as Danish: with colleagues I have mapped microtargeting
+usage worldwide, documenting how unevenly the practice is distributed across countries
+and party families.
+:::
+
+## AI-generated content and misinformation
+
+::: {.theme}
+::: {.theme-kicker}
+Citizen responses
+:::
+
+Generative AI has made synthetic images cheap and abundant. A basic democratic question
+follows: can people tell? In large-scale studies with colleagues from Copenhagen, Aarhus,
+and SDU, we find that most people **cannot** reliably distinguish AI-generated images from
+photographs — detection accuracy sits far closer to chance than most people assume of
+themselves.
+
+This line of work connects to a broader interest in the role of digital platforms in the
+information environment, which I have also written about for the Danish Ministry of
+Digitalisation.
+:::
+
+## Elite media strategy and public standing
+
+::: {.theme}
+::: {.theme-kicker}
+Elites and the public
+:::
+
+Politicians invest heavily in visibility. Does it pay? Working with Danish ministers, I
+examine how media activity relates to public approval and name recognition — and for
+*whom* that effort registers. The answer is not uniform across the electorate, which
+raises questions about who the audience for political communication effectively is.
+:::
+
+## Online political discussion
+
+::: {.theme}
+::: {.theme-kicker}
+Work in progress
+:::
+
+Comment sections under posts from politicians and news outlets are one of the few places
+where elites and citizens meet in public. I am currently working on what these discussions
+look like from both sides: how politicians manage and moderate the spaces they open, and
+what draws citizens into them.
+:::
+
+## Methods
+
+I collect and analyse large social media datasets through platforms' research APIs and
+combine several approaches depending on the question:
+
+- **Text-as-data and LLM-based classification** for large corpora of political messages
+  and comments
+- **Survey research and (field) experiments** for questions about citizen perception and
+  effects
+- **Descriptive and measurement work** — systematically documenting phenomena that are
+  often asserted but rarely measured, and building new indicators where none exist
+
+Nearly all of it happens in R.

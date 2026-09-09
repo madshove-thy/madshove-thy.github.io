@@ -1,0 +1,72 @@
+---
+title: "Publications"
+pagetitle: "Publications — Mads Fuglsang Hove"
+---
+
+::: {.note-box}
+For preprints or replication materials not linked below, feel free to
+[email me](mailto:madshove@ps.au.dk).
+:::
+
+## Peer-reviewed articles
+
+<!-- TODO: add links to each entry. Inside a .pub block, append:
+
+     ::: {.pub-links}
+     [DOI](https://doi.org/10.xxxx/xxxxx)
+     [PDF](files/paper.pdf)
+     [Replication data](https://osf.io/xxxxx)
+     :::
+-->
+
+::: {.pub}
+[An Effort Made for Whom? Exploring Ministers' Public Approval and Name Recognition in Relation to Their Media Activity]{.pub-title}
+[[Hove, M. F.]{.me}, Madsen, J. K., & Nielsen, P. H. (2026)]{.pub-authors}<br>
+[The International Journal of Press/Politics]{.pub-venue}
+:::
+
+::: {.pub}
+[Preaching to the Choirs: Political Parties' Online Targeting Strategies in Multi-Party Systems]{.pub-title}
+[[Hove, M. F.]{.me}, Hobolt, S. B., van Dalen, A., & de Vreese, C. (2026)]{.pub-authors}<br>
+[Party Politics]{.pub-venue}
+:::
+
+::: {.pub}
+[Seeing is Believing? Most People Struggle to Detect AI-generated Images]{.pub-title}
+[[Hove, M. F.]{.me}, Hjorth, F., Golovchenko, Y., Adler-Nissen, R., Bechmann, A., de Vreese, C. H., van Dalen, A., & Hobolt, S. B. (2026, forthcoming)]{.pub-authors}<br>
+[Social Media + Society]{.pub-venue}
+:::
+
+::: {.pub}
+[Who Does(n't) Target You? Mapping the Worldwide Usage of Online Political Microtargeting]{.pub-title}
+[Votta, F., Kruschinski, S., [Hove, M. F.]{.me}, Helberger, N., Dobber, T., & de Vreese, C. H. (2024)]{.pub-authors}<br>
+[Journal of Quantitative Description: Digital Media, 4]{.pub-venue}
+:::
+
+## Book chapters
+
+::: {.pub}
+[Who Do Parties Target? Worldwide Evidence on Political Microtargeting]{.pub-title}
+[Votta, F., Kruschinski, S., [Hove, M. F.]{.me}, Helberger, N., Dobber, T., & de Vreese, C.]{.pub-authors}<br>
+[In *The Routledge Companion to Social Media and Politics* (pp. 215–242). Routledge]{.pub-venue}
+:::
+
+::: {.pub}
+[Politikernes brug af online politisk microtargeting]{.pub-title}
+[[Hove, M. F.]{.me}, Hobolt, S. B., van Dalen, A., & de Vreese, C. H. (2024)]{.pub-authors}<br>
+[In *Partiledernes kamp om midten: Folketingsvalg 2022*. Djøf Forlag]{.pub-venue}
+:::
+
+## Reports and essays
+
+::: {.pub}
+[Tech-giganter og demokrati: Kunstig intelligens, misinformation og digitale platforme]{.pub-title}
+[[Hove, M. F.]{.me}, Adler-Nissen, R., Bechmann, A., de Vreese, C. H., Hjorth, F., & Golovchenko, Y. (2024)]{.pub-authors}<br>
+[Digitaliseringsministeriet]{.pub-venue}
+:::
+
+::: {.pub}
+[Hvem målretter dig, og virker det? Politikernes brug af annoncer på sociale medier]{.pub-title}
+[[Hove, M. F.]{.me} (2024)]{.pub-authors}<br>
+[Magtudredningen 2.0, essay]{.pub-venue}
+:::

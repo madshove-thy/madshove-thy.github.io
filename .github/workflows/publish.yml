@@ -1,0 +1,33 @@
+# Renders the Quarto site and publishes it to the gh-pages branch on every
+# push to main. GitHub Pages then serves gh-pages at madshove-thy.github.io.
+name: Publish website
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Quarto
+        uses: quarto-dev/quarto-actions/setup@v2
+
+      # Render and push the result to gh-pages. No R setup step is needed
+      # because no page currently executes R code. If you add a post with a
+      # live code chunk, add r-lib/actions/setup-r plus setup-r-dependencies
+      # above this step.
+      - name: Render and publish
+        uses: quarto-dev/quarto-actions/publish@v2
+        with:
+          target: gh-pages
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

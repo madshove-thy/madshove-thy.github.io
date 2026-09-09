@@ -1,0 +1,135 @@
+---
+title: "Mads Fuglsang Hove"
+pagetitle: "Mads Fuglsang Hove"
+page-layout: full
+---
+
+::: {.hero}
+![](images/profile.jpg){fig-alt="Portrait of Mads Fuglsang Hove"}
+
+::: {}
+::: {.role}
+Assistant Professor · Department of Political Science, Aarhus University
+:::
+
+I am a computational social scientist working at the intersection of communication
+science, political science, and data science. My research asks **how digital media
+affects contemporary democracy**: how political actors — politicians, parties, and
+media outlets — communicate strategically on digital platforms, and how citizens
+respond to what reaches them, from online misinformation and AI-generated content
+to the discussions unfolding in comment sections.
+
+I hold a PhD in Communication Science from the University of Amsterdam, completed in
+affiliation with the [Digital Democracy Centre](https://www.sdu.dk/en/forskning/digital-democracy-centre)
+at the University of Southern Denmark.
+
+[Read about my research](research.qmd){.btn .btn-outline-primary .btn-sm}
+[Publications](publications.qmd){.btn .btn-outline-primary .btn-sm}
+:::
+:::
+
+## Approach
+
+Methodologically, I collect and analyse large social media datasets through platforms'
+research APIs, and combine text-as-data methods with LLM-based content classification,
+survey research, and (field) experiments.
+
+I take measurement seriously. Alongside systematic descriptive work, I develop new
+measures — for instance a *targeting ideology* measure that infers political elites'
+perceptions of voter groups from the way they target online advertisements. I work
+primarily in R and particularly enjoy data visualisation.
+
+## Positions
+
+::: {.entry}
+::: {.entry-date}
+Aug. 2025 –
+:::
+::: {}
+**Assistant Professor**, Department of Political Science, Aarhus University
+:::
+:::
+
+::: {.entry}
+::: {.entry-date}
+Feb. – Jul. 2025
+:::
+::: {}
+**Postdoc**, Department of Political Science, Aarhus University
+:::
+:::
+
+::: {.entry}
+::: {.entry-date}
+Sep. 2022 – Jan. 2025
+:::
+::: {}
+**PhD Candidate**, affiliated with the Amsterdam School of Communication Research
+(ASCoR), University of Amsterdam, and the Digital Democracy Centre (DDC),
+University of Southern Denmark
+:::
+:::
+
+::: {.entry}
+::: {.entry-date}
+Sep. 2021 – Jan. 2025
+:::
+::: {}
+**External Lecturer**, Department of Political Science, University of Copenhagen
+:::
+:::
+
+## Education
+
+::: {.entry}
+::: {.entry-date}
+2025
+:::
+::: {}
+**PhD in Communication Science**, University of Amsterdam<br>
+*The Nature and Consequences of Online Political Microtargeting*<br>
+<span class="pub-authors">Supervisors: Claes de Vreese (UvA), Sara B. Hobolt (LSE), Arjen van Dalen (SDU)</span>
+:::
+:::
+
+::: {.entry}
+::: {.entry-date}
+2021
+:::
+::: {}
+**MSc in Political Science**, University of Copenhagen<br>
+<span class="pub-authors">Specialisation in Political Behaviour and Advanced Quantitative Methods</span>
+:::
+:::
+
+::: {.entry}
+::: {.entry-date}
+2019
+:::
+::: {}
+**BSc in Political Science**, University of Copenhagen
+:::
+:::
+
+## Contact
+
+::: {.contact-grid}
+::: {}
+<span class="label">Email</span>
+[madshove@ps.au.dk](mailto:madshove@ps.au.dk)
+:::
+::: {}
+<span class="label">Office</span>
+Building 1340, room 135<br>
+Department of Political Science<br>
+Aarhus University
+:::
+::: {}
+<span class="label">Elsewhere</span>
+[Bluesky](https://bsky.app/profile/madshovethy.bsky.social)<br>
+[LinkedIn](https://www.linkedin.com/in/mads-hove-0b5337112/)<br>
+[GitHub](https://github.com/madshove-thy)
+:::
+:::
+
+Students: you can [book a 15-minute office-hours slot](office-hours.qmd) directly.

@@ -1,0 +1,56 @@
+---
+title: "Office hours"
+pagetitle: "Office hours — Mads Fuglsang Hove"
+---
+
+Book a **15-minute slot** below. Pick a time that is free, enter your name and email, and
+you will get a confirmation with a calendar invite. Once a slot is taken it disappears for
+everyone else, so there is no risk of two of you turning up at once.
+
+::: {.note-box}
+**Before you book**, it helps a great deal if you write one or two sentences in the notes
+field about what you want to discuss — a thesis idea, feedback on a draft, a methods
+problem, or a course question. Fifteen minutes goes quickly.
+
+**Need longer?** Book two consecutive slots, or [email me](mailto:madshove@ps.au.dk).
+:::
+
+## Book a slot
+
+```{=html}
+<div class="booking-embed">
+  <!-- TODO: paste your Microsoft Bookings page URL into the src attribute below,
+       then delete the placeholder <div> underneath it.
+       The URL looks like:
+       https://outlook.office.com/book/OfficeHours@uni.au.dk/ -->
+  <div style="padding:3rem 2rem;text-align:center;color:#5b6570;font-size:0.95rem;">
+    <strong style="display:block;color:#003d73;font-size:1.05rem;margin-bottom:0.5rem;">
+      Booking calendar not yet connected
+    </strong>
+    The scheduling page is being set up. In the meantime, please
+    <a href="mailto:madshove@ps.au.dk">email me</a> to arrange a time.
+  </div>
+
+  <!--
+  <iframe
+    src="PASTE_YOUR_BOOKINGS_URL_HERE"
+    title="Book a 15-minute office-hours slot with Mads Fuglsang Hove"
+    loading="lazy"
+    scrolling="yes">
+  </iframe>
+  -->
+</div>
+```
+
+## Where
+
+Office hours are held in **building 1340, room 135**, Department of Political Science,
+Aarhus University — or online, if you pick the online option when booking.
+
+## Practical notes
+
+- Slots open roughly two weeks ahead and close one hour before the start time.
+- If you cannot make it, cancel through the link in your confirmation email so the slot
+  frees up for someone else.
+- Outside term time and during leave, availability is limited — the calendar will simply
+  show no open slots.

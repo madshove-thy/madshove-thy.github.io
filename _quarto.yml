@@ -2,10 +2,13 @@
 project:
   type: website
   output-dir: _site
-  # Render only the pages we author; keeps README.md out of the site
+  # Only the listed pages are built. research.qmd and blog/ are kept in the
+  # repository but excluded from the site; to bring either back, drop the
+  # exclusion below and re-add its navbar entry.
   render:
     - "*.qmd"
-    - "blog/**/*.qmd"
+    - "!research.qmd"
+    - "!blog/"
 
 website:
   title: "Mads Fuglsang Hove"
@@ -21,8 +24,6 @@ website:
     left:
       - href: index.qmd
         text: About
-      - href: research.qmd
-        text: Research
       - href: publications.qmd
         text: Publications
       - href: teaching.qmd
@@ -31,8 +32,6 @@ website:
         text: Office hours
       - href: media.qmd
         text: Media & outreach
-      - href: blog/index.qmd
-        text: Notes
     right:
       - icon: envelope
         href: mailto:madshove@ps.au.dk
@@ -49,15 +48,11 @@ website:
 
   page-footer:
     left: "&copy; 2026 Mads Fuglsang Hove"
-    center: "Built with [Quarto](https://quarto.org)"
     right: "[madshove@ps.au.dk](mailto:madshove@ps.au.dk)"
 
 format:
   html:
-    theme:
-      - cosmo
-      - styles.scss
+    theme: styles.scss
     toc: false
-    anchor-sections: true
-    smooth-scroll: true
+    anchor-sections: false
     link-external-newwindow: true

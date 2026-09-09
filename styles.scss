@@ -1,143 +1,150 @@
 /*-- scss:defaults --*/
 
-// Palette: Aarhus University deep blue as the anchor, warm off-white ground.
-$au-blue:        #003d73;
-$au-blue-dark:   #002546;
-$au-accent:      #c8552b;   // warm rust, used sparingly for links on hover / rules
-$ink:            #1c1f23;
-$ink-muted:      #5b6570;
-$paper:          #fbfaf8;
-$rule:           #e2e0dc;
+// Deliberately plain: black text on white, one system font stack, no webfonts,
+// no accent colour, no hover animations. Everything below either sets a neutral
+// default or removes decoration that Bootstrap adds by default.
 
-$body-bg:        $paper;
-$body-color:     $ink;
-$link-color:     $au-blue;
-$navbar-bg:      $paper;
-$navbar-fg:      $ink;
+$black:      #000;
+$ink:        #222;
+$ink-muted:  #555;
+$rule:       #ddd;
+$link:       #00448a;
 
-// Typography: serif for display headings, humanist sans for body text.
-$font-family-sans-serif: "Source Sans 3", "Source Sans Pro", -apple-system, "Segoe UI", Roboto, sans-serif;
-$headings-font-family: "Source Serif 4", "Source Serif Pro", Georgia, serif;
-$font-size-root: 17px;
-$line-height-base: 1.65;
+$body-bg:    #fff;
+$body-color: $ink;
+$link-color: $link;
+$link-hover-color: $link;
 
-$toc-color: $ink-muted;
+$navbar-bg:  #fff;
+$navbar-fg:  $ink;
+$navbar-light-color: $ink;
+$navbar-light-hover-color: $ink;
+$navbar-light-active-color: $black;
+
+// A single, ordinary system stack for both body and headings.
+$font-family-sans-serif: -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, Helvetica, sans-serif;
+$headings-font-family: $font-family-sans-serif;
+$font-size-root: 16px;
+$line-height-base: 1.6;
+$headings-font-weight: 700;
+
+// Flat components: no rounded corners, no shadows.
+$border-radius: 0;
+$border-radius-sm: 0;
+$border-radius-lg: 0;
+$box-shadow: none;
+$box-shadow-sm: none;
+$box-shadow-lg: none;
 
 /*-- scss:rules --*/
 
-@import url("https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,300..700;1,300..700&family=Source+Serif+4:ital,opsz,wght@0,8..60,300..700;1,8..60,300..700&display=swap");
-
 body {
-  -webkit-font-smoothing: antialiased;
+  color: $ink;
+  background: #fff;
+}
+
+// Keep the text column narrow enough to read comfortably.
+main {
+  max-width: 46rem;
+}
+
+// ---- Headings ---------------------------------------------------------------
+
+h1, h2, h3, h4 {
+  color: $black;
+  font-weight: 700;
+}
+
+h1.title {
+  font-size: 1.6rem;
+  margin-bottom: 0.75rem;
+}
+
+main h2 {
+  font-size: 1.15rem;
+  margin-top: 2.25rem;
+  margin-bottom: 0.75rem;
+}
+
+main h3 {
+  font-size: 1rem;
+  margin-top: 1.5rem;
+}
+
+// ---- Links ------------------------------------------------------------------
+
+a {
+  color: $link;
+  text-decoration: underline;
+}
+
+a:hover {
+  color: $link;
+  text-decoration: underline;
 }
 
 // ---- Navbar -----------------------------------------------------------------
 
 .navbar {
   border-bottom: 1px solid $rule;
-  font-family: $font-family-sans-serif;
+  padding-top: 0.4rem;
+  padding-bottom: 0.4rem;
+  box-shadow: none;
 }
 
 .navbar-brand {
-  font-family: $headings-font-family;
-  font-weight: 600;
-  letter-spacing: -0.01em;
+  font-weight: 700;
+  font-size: 1rem;
 }
 
 .navbar .nav-link {
-  font-size: 0.95rem;
-  color: $ink-muted !important;
-  border-bottom: 2px solid transparent;
-  transition: color 0.15s ease, border-color 0.15s ease;
+  font-size: 0.9rem;
+  color: $ink !important;
+  text-decoration: none;
 }
 
 .navbar .nav-link:hover,
 .navbar .nav-link.active {
-  color: $au-blue !important;
-  border-bottom-color: $au-accent;
+  color: $black !important;
+  text-decoration: underline;
 }
 
-// ---- Headings and body ------------------------------------------------------
-
-h1, h2, h3, h4 {
-  font-family: $headings-font-family;
-  letter-spacing: -0.015em;
-  color: $au-blue-dark;
-}
-
-h1.title {
-  font-size: 2.4rem;
-  font-weight: 600;
-  margin-bottom: 0.2rem;
-}
-
-// Section headings get a short rule above them, which reads as an academic
-// section break without adding visual noise.
-main h2 {
-  font-size: 1.5rem;
-  margin-top: 2.75rem;
-  padding-top: 1.25rem;
-  border-top: 1px solid $rule;
-}
-
-main h3 {
-  font-size: 1.15rem;
-  font-weight: 600;
-  margin-top: 1.75rem;
-}
-
-a {
+.navbar a, .nav-footer a {
   text-decoration: none;
-  border-bottom: 1px solid rgba($au-blue, 0.3);
 }
 
-a:hover {
-  color: $au-accent;
-  border-bottom-color: $au-accent;
+.nav-footer a:hover {
+  text-decoration: underline;
 }
 
-// Links inside the navbar and footer should not carry the underline rule.
-.navbar a, .nav-footer a, .card a, a.btn {
-  border-bottom: none;
-}
+// ---- Home page layout -------------------------------------------------------
 
-.lead {
-  font-size: 1.15rem;
-  color: $ink-muted;
-  font-weight: 300;
-}
-
-// ---- Home page hero ---------------------------------------------------------
-
+// Structural only: puts the portrait beside the bio. No styling on the image.
 .hero {
   display: grid;
-  grid-template-columns: 220px 1fr;
-  gap: 2.5rem;
+  grid-template-columns: 180px 1fr;
+  gap: 1.75rem;
   align-items: start;
   margin-bottom: 1rem;
 }
 
 .hero img {
   width: 100%;
-  border-radius: 4px;
-  filter: grayscale(15%);
 }
 
 .hero .role {
-  font-family: $font-family-sans-serif;
-  font-size: 1.05rem;
+  font-size: 0.95rem;
   color: $ink-muted;
-  margin-bottom: 1.25rem;
+  margin-bottom: 1rem;
 }
 
-// Collapse the hero to a single column on narrow screens.
 @media (max-width: 700px) {
   .hero {
     grid-template-columns: 1fr;
-    gap: 1.25rem;
+    gap: 1rem;
   }
   .hero img {
-    max-width: 200px;
+    max-width: 180px;
   }
 }
 
@@ -145,139 +152,94 @@ a:hover {
 
 .contact-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
   gap: 1rem 2rem;
   font-size: 0.95rem;
-  margin-top: 1rem;
+  margin-top: 0.75rem;
 }
 
 .contact-grid .label {
   display: block;
-  font-size: 0.75rem;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  color: $ink-muted;
+  font-weight: 700;
+  font-size: 0.85rem;
+  color: $ink;
   margin-bottom: 0.15rem;
 }
 
 // ---- Publication list -------------------------------------------------------
 
+// Plain paragraphs with spacing between them; no rules, borders, or hover states.
 .pub {
-  padding: 1.1rem 0 1.1rem 1.1rem;
-  border-left: 3px solid $rule;
-  margin-bottom: 0.5rem;
-  transition: border-color 0.15s ease;
-}
-
-.pub:hover {
-  border-left-color: $au-accent;
+  margin-bottom: 1.1rem;
+  font-size: 0.95rem;
 }
 
 .pub .pub-title {
-  font-family: $headings-font-family;
-  font-size: 1.08rem;
-  font-weight: 600;
-  color: $au-blue-dark;
   display: block;
-  margin-bottom: 0.25rem;
+  font-weight: 700;
+  color: $black;
+  margin-bottom: 0.15rem;
 }
 
 .pub .pub-authors {
-  font-size: 0.94rem;
   color: $ink-muted;
 }
 
 // The user's own name is bolded in author lists, as in a CV.
 .pub .pub-authors .me {
   color: $ink;
-  font-weight: 600;
+  font-weight: 700;
 }
 
 .pub .pub-venue {
-  font-size: 0.94rem;
   font-style: italic;
   color: $ink-muted;
 }
 
 .pub .pub-links {
-  margin-top: 0.45rem;
+  margin-top: 0.3rem;
+  font-size: 0.85rem;
 }
 
 .pub .pub-links a {
-  font-size: 0.78rem;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-  border: 1px solid rgba($au-blue, 0.35);
-  border-radius: 3px;
-  padding: 0.12rem 0.5rem;
-  margin-right: 0.35rem;
-  white-space: nowrap;
+  margin-right: 0.75rem;
 }
 
-.pub .pub-links a:hover {
-  background: $au-blue;
-  color: $paper;
-  border-color: $au-blue;
-}
-
-// ---- Research themes --------------------------------------------------------
-
-.theme {
-  margin-bottom: 2rem;
-}
-
-.theme .theme-kicker {
-  font-size: 0.75rem;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  color: $au-accent;
-  font-weight: 600;
-}
-
-// ---- Simple two-column listing (media, talks) -------------------------------
+// ---- Two-column listing (courses, media) ------------------------------------
 
 .entry {
   display: grid;
-  grid-template-columns: 130px 1fr;
-  gap: 1.25rem;
-  padding: 0.6rem 0;
-  border-bottom: 1px solid $rule;
+  grid-template-columns: 110px 1fr;
+  gap: 1rem;
+  padding: 0.4rem 0;
   font-size: 0.95rem;
 }
 
 .entry .entry-date {
   color: $ink-muted;
-  font-size: 0.85rem;
-  padding-top: 0.15rem;
 }
 
 @media (max-width: 700px) {
   .entry {
     grid-template-columns: 1fr;
-    gap: 0.15rem;
+    gap: 0.1rem;
   }
 }
 
-// ---- Callout-style note box -------------------------------------------------
+// ---- Note box ---------------------------------------------------------------
 
 .note-box {
-  background: #fff;
   border: 1px solid $rule;
-  border-left: 3px solid $au-blue;
-  border-radius: 3px;
-  padding: 1rem 1.25rem;
+  padding: 0.85rem 1rem;
   font-size: 0.95rem;
-  margin: 1.5rem 0;
+  margin: 1.25rem 0;
 }
 
 // ---- Booking embed ----------------------------------------------------------
 
 .booking-embed {
   border: 1px solid $rule;
-  border-radius: 4px;
-  overflow: hidden;
-  background: #fff;
-  margin: 1.5rem 0;
+  margin: 1.25rem 0;
 }
 
 .booking-embed iframe {
@@ -293,10 +255,4 @@ a:hover {
   border-top: 1px solid $rule;
   font-size: 0.85rem;
   color: $ink-muted;
-}
-
-// ---- Blog listing -----------------------------------------------------------
-
-.quarto-listing-default .listing-title {
-  font-family: $headings-font-family;
 }

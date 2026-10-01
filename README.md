@@ -22,8 +22,6 @@ no hover effects, flat components. If you edit `styles.scss`, keep it boring on 
 
 ## Open items
 
-- [ ] **Bookings URL** — the office-hours page shows a placeholder until a Microsoft
-      Bookings calendar is connected. See [below](#connecting-the-office-hours-booking-calendar).
 - [ ] **DOIs and links** on `publications.qmd` — there is a `TODO` comment near the top
       showing the exact markup for DOI / PDF / replication-data buttons.
 - [ ] **Missing year** — the Votta et al. Routledge chapter ("Who Do Parties Target?") has
@@ -40,7 +38,7 @@ no hover effects, flat components. If you edit `styles.scss`, keep it boring on 
 | `index.qmd` | Home / about page |
 | `publications.qmd` | Publication list |
 | `teaching.qmd` | Courses and thesis supervision |
-| `office-hours.qmd` | Booking page (Microsoft Bookings embed) |
+| `office-hours.qmd` | Office hours (Thursdays on Zoom, booked by email) |
 | `media.qmd` | Media appearances |
 | `research.qmd` | Research themes — **not currently rendered** |
 | `blog/` | Notes section — **not currently rendered** |
@@ -109,31 +107,6 @@ R code chunks work exactly as in R Markdown and plots render into the page. The 
 already installs R, knitr, rmarkdown, ggplot2 and dplyr — **any other package a post
 uses must be added to the `packages:` list in `.github/workflows/publish.yml`**, or the
 CI render will fail.
-
-## Connecting the office-hours booking calendar
-
-`office-hours.qmd` has the embed in place but no calendar behind it yet. GitHub Pages is
-static hosting, so the scheduling logic has to live in an external service. Microsoft
-Bookings is the right fit: it comes with the AU Microsoft 365 account, writes to the
-Outlook calendar, and holds and releases slots automatically.
-
-1. Go to <https://outlook.office.com/bookings/> and sign in with the AU account. Create a
-   booking calendar (e.g. "Office Hours — Mads Fuglsang Hove").
-2. Under **Services**, create one service: duration **15 minutes**, buffer time as
-   preferred, `Maximum attendees = 1` so a booked slot closes for everyone else.
-3. Add a required custom field — "What would you like to discuss?" — which is what makes
-   15 minutes usable.
-4. Under **Staff**, add yourself and tick **"Events on this staff member's calendar
-   affect availability"**. This is the setting that prevents double-booking against
-   teaching, meetings, and leave.
-5. Under **Booking page**, set the page to *available to people in your organisation* (or
-   public, if external students should book too) and publish it. Copy the URL.
-6. In `office-hours.qmd`: paste the URL into the `src=""` of the commented-out
-   `<iframe>`, uncomment the iframe, and delete the placeholder `<div>` above it.
-7. Commit and push.
-
-If AU restricts Bookings, [Cal.com](https://cal.com) free tier does the same job and
-connects to an Outlook or Google calendar.
 
 ## Notes on the setup
 

@@ -50,4 +50,4 @@ Aarhus University
 :::
 :::
 
-Students: you can [book a 15-minute office-hours slot](office-hours.qmd) directly.
+Students: see [office hours](office-hours.qmd) for how to book a 15-minute slot.

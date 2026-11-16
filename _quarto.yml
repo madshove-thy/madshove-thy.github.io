@@ -9,6 +9,9 @@ project:
     - "*.qmd"
     - "!research.qmd"
     - "!blog/"
+  # Static classroom page, copied as-is (not linked from the site)
+  resources:
+    - real-or-ai/**
 
 website:
   title: "Mads Fuglsang Hove"

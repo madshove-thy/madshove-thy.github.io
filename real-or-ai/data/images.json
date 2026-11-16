@@ -1,0 +1,386 @@
+[
+  {
+    "id": "i0f56",
+    "pair": "King",
+    "category": "People",
+    "ai": 0,
+    "caption": "",
+    "file": "img/i0f56.jpg"
+  },
+  {
+    "id": "i20b3",
+    "pair": "Covid",
+    "category": "People",
+    "ai": 1,
+    "caption": "",
+    "file": "img/i20b3.jpg"
+  },
+  {
+    "id": "i25c2",
+    "pair": "Flood",
+    "category": "Crisis",
+    "ai": 0,
+    "caption": "",
+    "file": "img/i25c2.jpg"
+  },
+  {
+    "id": "i2773",
+    "pair": "Hawaii",
+    "category": "Crisis",
+    "ai": 1,
+    "caption": "",
+    "file": "img/i2773.jpg"
+  },
+  {
+    "id": "i2d2c",
+    "pair": "Maralago",
+    "category": "Political",
+    "ai": 1,
+    "caption": "",
+    "file": "img/i2d2c.jpg"
+  },
+  {
+    "id": "i3396",
+    "pair": "Planecrash",
+    "category": "Crisis",
+    "ai": 1,
+    "caption": "",
+    "file": "img/i3396.jpg"
+  },
+  {
+    "id": "i3548",
+    "pair": "Earthquake",
+    "category": "Crisis",
+    "ai": 0,
+    "caption": "",
+    "file": "img/i3548.jpg"
+  },
+  {
+    "id": "i3552",
+    "pair": "Solar",
+    "category": "Regular",
+    "ai": 1,
+    "caption": "",
+    "file": "img/i3552.jpg"
+  },
+  {
+    "id": "i3be5",
+    "pair": "Avalanche",
+    "category": "Crisis",
+    "ai": 0,
+    "caption": "",
+    "file": "img/i3be5.jpg"
+  },
+  {
+    "id": "i3c19",
+    "pair": "Flood",
+    "category": "Crisis",
+    "ai": 1,
+    "caption": "",
+    "file": "img/i3c19.jpg"
+  },
+  {
+    "id": "i3c92",
+    "pair": "Cow",
+    "category": "Regular",
+    "ai": 1,
+    "caption": "",
+    "file": "img/i3c92.jpg"
+  },
+  {
+    "id": "i3d02",
+    "pair": "Cow",
+    "category": "Regular",
+    "ai": 0,
+    "caption": "",
+    "file": "img/i3d02.jpg"
+  },
+  {
+    "id": "i3d1f",
+    "pair": "King",
+    "category": "People",
+    "ai": 1,
+    "caption": "",
+    "file": "img/i3d1f.jpg"
+  },
+  {
+    "id": "i4249",
+    "pair": "Refugee",
+    "category": "Political",
+    "ai": 0,
+    "caption": "",
+    "file": "img/i4249.jpg"
+  },
+  {
+    "id": "i4273",
+    "pair": "Planecrash",
+    "category": "Crisis",
+    "ai": 0,
+    "caption": "",
+    "file": "img/i4273.jpg"
+  },
+  {
+    "id": "i4698",
+    "pair": "Mark",
+    "category": "People",
+    "ai": 0,
+    "caption": "",
+    "file": "img/i4698.jpg"
+  },
+  {
+    "id": "i4a98",
+    "pair": "Train",
+    "category": "Regular",
+    "ai": 0,
+    "caption": "",
+    "file": "img/i4a98.jpg"
+  },
+  {
+    "id": "i4e99",
+    "pair": "Brandenburger",
+    "category": "Political",
+    "ai": 1,
+    "caption": "",
+    "file": "img/i4e99.jpg"
+  },
+  {
+    "id": "i5632",
+    "pair": "London",
+    "category": "Political",
+    "ai": 0,
+    "caption": "",
+    "file": "img/i5632.jpg"
+  },
+  {
+    "id": "i589d",
+    "pair": "Apple",
+    "category": "Regular",
+    "ai": 1,
+    "caption": "",
+    "file": "img/i589d.jpg"
+  },
+  {
+    "id": "i5c20",
+    "pair": "Refugee",
+    "category": "Political",
+    "ai": 1,
+    "caption": "",
+    "file": "img/i5c20.jpg"
+  },
+  {
+    "id": "i5fb2",
+    "pair": "Dune",
+    "category": "Regular",
+    "ai": 1,
+    "caption": "",
+    "file": "img/i5fb2.jpg"
+  },
+  {
+    "id": "i6342",
+    "pair": "Bezos",
+    "category": "People",
+    "ai": 1,
+    "caption": "",
+    "file": "img/i6342.jpg"
+  },
+  {
+    "id": "i685b",
+    "pair": "Eruption",
+    "category": "Crisis",
+    "ai": 0,
+    "caption": "",
+    "file": "img/i685b.jpg"
+  },
+  {
+    "id": "i7644",
+    "pair": "Bird",
+    "category": "Political",
+    "ai": 0,
+    "caption": "",
+    "file": "img/i7644.jpg"
+  },
+  {
+    "id": "i8497",
+    "pair": "Earthquake",
+    "category": "Crisis",
+    "ai": 1,
+    "caption": "",
+    "file": "img/i8497.jpg"
+  },
+  {
+    "id": "i8e3e",
+    "pair": "Whale",
+    "category": "Political",
+    "ai": 1,
+    "caption": "",
+    "file": "img/i8e3e.jpg"
+  },
+  {
+    "id": "i9065",
+    "pair": "Dubai",
+    "category": "Regular",
+    "ai": 0,
+    "caption": "",
+    "file": "img/i9065.jpg"
+  },
+  {
+    "id": "i9d09",
+    "pair": "Whale",
+    "category": "Political",
+    "ai": 0,
+    "caption": "",
+    "file": "img/i9d09.jpg"
+  },
+  {
+    "id": "i9e9b",
+    "pair": "Apple",
+    "category": "Regular",
+    "ai": 0,
+    "caption": "",
+    "file": "img/i9e9b.jpg"
+  },
+  {
+    "id": "i9f69",
+    "pair": "Bezos",
+    "category": "People",
+    "ai": 0,
+    "caption": "",
+    "file": "img/i9f69.jpg"
+  },
+  {
+    "id": "ia0e1",
+    "pair": "Train",
+    "category": "Regular",
+    "ai": 1,
+    "caption": "",
+    "file": "img/ia0e1.jpg"
+  },
+  {
+    "id": "ia44f",
+    "pair": "California",
+    "category": "Crisis",
+    "ai": 0,
+    "caption": "",
+    "file": "img/ia44f.jpg"
+  },
+  {
+    "id": "iaefd",
+    "pair": "London",
+    "category": "Political",
+    "ai": 1,
+    "caption": "",
+    "file": "img/iaefd.jpg"
+  },
+  {
+    "id": "ibdad",
+    "pair": "California",
+    "category": "Crisis",
+    "ai": 1,
+    "caption": "",
+    "file": "img/ibdad.jpg"
+  },
+  {
+    "id": "ic084",
+    "pair": "Meghan",
+    "category": "People",
+    "ai": 0,
+    "caption": "",
+    "file": "img/ic084.jpg"
+  },
+  {
+    "id": "ic530",
+    "pair": "Brandenburger",
+    "category": "Political",
+    "ai": 0,
+    "caption": "",
+    "file": "img/ic530.jpg"
+  },
+  {
+    "id": "ic70c",
+    "pair": "Hawaii",
+    "category": "Crisis",
+    "ai": 0,
+    "caption": "",
+    "file": "img/ic70c.jpg"
+  },
+  {
+    "id": "icc5a",
+    "pair": "Covid",
+    "category": "People",
+    "ai": 0,
+    "caption": "",
+    "file": "img/icc5a.jpg"
+  },
+  {
+    "id": "icd0d",
+    "pair": "Meghan",
+    "category": "People",
+    "ai": 1,
+    "caption": "",
+    "file": "img/icd0d.jpg"
+  },
+  {
+    "id": "iddb3",
+    "pair": "Mark",
+    "category": "People",
+    "ai": 1,
+    "caption": "",
+    "file": "img/iddb3.jpg"
+  },
+  {
+    "id": "ie6a7",
+    "pair": "Eruption",
+    "category": "Crisis",
+    "ai": 1,
+    "caption": "",
+    "file": "img/ie6a7.jpg"
+  },
+  {
+    "id": "ie81e",
+    "pair": "Avalanche",
+    "category": "Crisis",
+    "ai": 1,
+    "caption": "",
+    "file": "img/ie81e.jpg"
+  },
+  {
+    "id": "ie9d4",
+    "pair": "Solar",
+    "category": "Regular",
+    "ai": 0,
+    "caption": "",
+    "file": "img/ie9d4.jpg"
+  },
+  {
+    "id": "ieb4c",
+    "pair": "Dune",
+    "category": "Regular",
+    "ai": 0,
+    "caption": "",
+    "file": "img/ieb4c.jpg"
+  },
+  {
+    "id": "iebb4",
+    "pair": "Maralago",
+    "category": "Political",
+    "ai": 0,
+    "caption": "",
+    "file": "img/iebb4.jpg"
+  },
+  {
+    "id": "if203",
+    "pair": "Dubai",
+    "category": "Regular",
+    "ai": 1,
+    "caption": "",
+    "file": "img/if203.jpg"
+  },
+  {
+    "id": "ifd9e",
+    "pair": "Bird",
+    "category": "Political",
+    "ai": 1,
+    "caption": "",
+    "file": "img/ifd9e.jpg"
+  }
+]

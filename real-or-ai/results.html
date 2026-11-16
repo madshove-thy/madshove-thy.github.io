@@ -1,0 +1,280 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Real or AI? Results</title>
+<link rel="icon" href="data:,">
+<link rel="stylesheet" href="style.css">
+<style>
+  main { max-width: 1400px; }
+  header { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; justify-content: space-between; }
+  .stats { display: flex; flex-wrap: wrap; gap: 12px; margin: 8px 0 4px; }
+  .stat { background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 8px 14px; min-width: 150px; }
+  .stat b { display: block; font-size: 1.7rem; line-height: 1.2; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(480px, 1fr)); gap: 12px; }
+  .chart h2 { margin-top: 0; }
+  svg { width: 100%; height: auto; display: block; }
+  svg text { fill: var(--fg); font: 12px system-ui, sans-serif; }
+  svg .muted { fill: var(--muted); }
+  .pill { display: inline-block; padding: 2px 10px; border-radius: 999px; border: 1px solid var(--line); font-size: 0.85rem; }
+  .small { font-size: 0.8rem; }
+  .expl { border-left: 3px solid var(--warn); padding-left: 10px; }
+  @media (max-width: 560px) { .grid { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<main>
+  <header>
+    <div>
+      <h1 style="margin:0">Real or AI? <span class="muted">class results</span></h1>
+      <span class="pill" id="status">loading&hellip;</span>
+      <span class="muted small" id="cohort"></span>
+    </div>
+    <div>
+      <button id="reveal">Reveal answers</button>
+      <button id="hide" class="secondary">Hide</button>
+    </div>
+  </header>
+
+  <div class="stats">
+    <div class="stat"><b id="n-resp">0</b>respondents</div>
+    <div class="stat"><b id="n-rat">0</b>ratings</div>
+    <div class="stat" id="stat-brier" class="hidden"><b id="brier-class">&ndash;</b>class mean Brier</div>
+    <div class="stat" id="stat-paper"><b id="brier-paper">&ndash;</b>paper (Denmark, N = 2,091)</div>
+  </div>
+  <p class="muted small" id="refs"></p>
+
+  <!-- before the reveal -->
+  <section id="pre" class="card chart">
+    <h2>Ratings so far (all images)</h2>
+    <div id="c-pre"></div>
+    <p class="muted small">Truth is hidden until you reveal. Declared analysis: (1) Brier score per respondent, (2) Brier by image context, (3) ratings of AI vs. authentic images, (4) confidence by context. Nothing else is shown except the clearly labelled exploratory table.</p>
+  </section>
+
+  <!-- after the reveal -->
+  <section id="post" class="hidden">
+    <div class="grid">
+      <div class="card chart"><h2>1. Brier score per respondent</h2><div id="c1"></div></div>
+      <div class="card chart"><h2>2. Brier score by image context</h2><div id="c2"></div></div>
+      <div class="card chart"><h2>3. Ratings: AI vs. authentic images</h2><div id="c3"></div></div>
+      <div class="card chart"><h2>4. Confidence by image context</h2><div id="c4"></div></div>
+    </div>
+    <div class="card expl">
+      <h2 style="margin-top:0">Exploratory (not declared in advance): which images fooled us most?</h2>
+      <div id="c5"></div>
+    </div>
+    <p class="muted small">Caveats: students have read the paper; the class has few respondents, so intervals are wide (95% cluster bootstrap over respondents, simple means, not the paper's multilevel models); images differ a lot in difficulty and each respondent sees only seven.</p>
+  </section>
+</main>
+
+<script src="config.js"></script>
+<script src="common.js"></script>
+<script src="net.js"></script>
+<script>
+(async function () {
+  "use strict";
+  const $ = (id) => document.getElementById(id);
+  const cfg = window.RA_CONFIG;
+  const params = new URLSearchParams(location.search);
+  const cohort = (params.get("cohort") || cfg.COHORT || "class12").toLowerCase().replace(/[^a-z0-9_-]/g, "").slice(0, 30);
+  const demo = params.get("demo") === "1";   // simulated respondents, for testing the page
+  $("cohort").textContent = demo ? " DEMO DATA (simulated)" : " cohort: " + cohort;
+
+  const [manifest, bench] = await Promise.all([
+    fetch("data/images.json").then((r) => r.json()),
+    fetch("data/paper_benchmarks.json").then((r) => r.json()),
+  ]);
+  const CATS = ["Regular", "Crisis", "People", "Political"];
+  const byId = Object.fromEntries(manifest.map((m) => [m.id, m]));
+  const f3 = (x) => (Number.isFinite(x) ? x.toFixed(3) : "–");
+  $("brier-paper").textContent = f3(bench.mean_brier);
+  $("refs").textContent = "Reference lines: always answering 50 = 0.250; random guessing = 0.333.";
+
+  // ---- data source: Apps Script endpoint, or simulated respondents in demo mode --------
+  let revealed = false, rows = [], demoRows = null;
+  function simulate(nResp) {
+    const rng = Math.random, out = [];
+    const randn = () => { let u = 0, v = 0; while (!u) u = rng(); while (!v) v = rng(); return Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * Math.PI * v); };
+    const pm = Object.fromEntries(bench.per_image.map((r) => [r.pair + "|" + r.ai, r.mean_score]));
+    for (let s = 0; s < nResp; s++) {
+      const plan = RA.drawSeven(manifest, bench);
+      plan.forEach((m, i) => {
+        const sc = Math.max(0, Math.min(100, Math.round((pm[m.pair + "|" + m.ai] || 50) + 25 * randn())));
+        out.push({ session: "demo" + s, task: i + 1, image_id: m.id, score: sc, seconds: 6 });
+      });
+    }
+    return out;
+  }
+
+  async function refresh() {
+    try {
+      if (demo) { demoRows = demoRows || simulate(32); rows = demoRows; }
+      else {
+        const d = await RA_NET.get({ action: "results", cohort });
+        if (!d || !d.ok) throw new Error((d && d.error) || "no endpoint configured");
+        rows = d.rows || []; revealed = !!d.revealed;
+      }
+    } catch (e) { $("status").textContent = "cannot reach data source"; return; }
+    render();
+  }
+
+  $("reveal").onclick = () => setReveal(true);
+  $("hide").onclick = () => setReveal(false);
+  async function setReveal(value) {
+    if (demo) { revealed = value; return render(); }
+    let pin = localStorage.getItem("realorai:pin");
+    if (!pin) { pin = prompt("Teacher PIN"); if (!pin) return; }
+    const r = await RA_NET.post({ action: "reveal", cohort, pin, value });
+    if (r && r.ok) { localStorage.setItem("realorai:pin", pin); revealed = value; render(); }
+    else { localStorage.removeItem("realorai:pin"); alert("Could not change state: " + ((r && r.error) || "unknown")); }
+  }
+
+  // ---- svg helpers ----------------------------------------------------------------------
+  const NS = "http://www.w3.org/2000/svg";
+  function el(tag, attrs, parent, text) {
+    const e = document.createElementNS(NS, tag);
+    for (const k in attrs) e.setAttribute(k, attrs[k]);
+    if (text != null) e.textContent = text;
+    if (parent) parent.appendChild(e);
+    return e;
+  }
+  function canvas(host, w, h) { host.innerHTML = ""; return el("svg", { viewBox: "0 0 " + w + " " + h }, host); }
+  const COL = { cls: "var(--accent)", ai: "var(--ai)", real: "var(--real)", ref: "var(--muted)" };
+
+  // histogram with optional vertical reference lines
+  function histogram(host, values, o) {
+    const W = 560, H = 260, L = 40, R = 12, T = 14, B = 36;
+    const svg = canvas(host, W, H);
+    const nb = Math.round((o.max - o.min) / o.bin);
+    const cnt = new Array(nb).fill(0);
+    for (const v of values) { let i = Math.floor((v - o.min) / o.bin); if (i >= nb) i = nb - 1; if (i < 0) i = 0; cnt[i]++; }
+    const ymax = Math.max(1, ...cnt);
+    const x = (v) => L + ((v - o.min) / (o.max - o.min)) * (W - L - R);
+    const y = (c) => H - B - (c / ymax) * (H - B - T);
+    cnt.forEach((c, i) => el("rect", { x: x(o.min + i * o.bin) + 1, y: y(c), width: x(o.min + (i + 1) * o.bin) - x(o.min + i * o.bin) - 2, height: H - B - y(c), fill: COL.cls, opacity: 0.8 }, svg));
+    el("line", { x1: L, x2: W - R, y1: H - B, y2: H - B, stroke: COL.ref }, svg);
+    for (let t = o.min; t <= o.max + 1e-9; t += o.tick) el("text", { x: x(t), y: H - B + 16, "text-anchor": "middle" }, svg, o.fmt ? o.fmt(t) : t);
+    el("text", { x: (W + L) / 2, y: H - 4, "text-anchor": "middle", class: "muted" }, svg, o.xlabel || "");
+    el("text", { x: 4, y: T + 4, class: "muted" }, svg, "n");
+    el("text", { x: L - 6, y: y(ymax) + 4, "text-anchor": "end", class: "muted" }, svg, ymax);
+    // reference lines, with a legend at the top right (labels on the lines would overlap)
+    (o.lines || []).forEach((ln, i) => {
+      const dash = ln.dash === undefined ? "4 3" : ln.dash;
+      const col = ln.color || COL.ref;
+      el("line", { x1: x(ln.v), x2: x(ln.v), y1: T, y2: H - B, stroke: col, "stroke-dasharray": dash, "stroke-width": 2 }, svg);
+      const ly = T + 8 + i * 16;
+      el("line", { x1: W - R - 150, x2: W - R - 128, y1: ly, y2: ly, stroke: col, "stroke-dasharray": dash, "stroke-width": 2 }, svg);
+      el("text", { x: W - R - 122, y: ly + 4 }, svg, ln.label);
+    });
+  }
+
+  // dot plot with CI whiskers; rows: {label, v, lo, hi, ref}
+  function dotplot(host, rowsIn, o) {
+    const W = 560, rowH = 44, L = 90, R = 16, T = 12, B = 34, H = T + B + rowH * rowsIn.length;
+    const svg = canvas(host, W, H);
+    const x = (v) => L + ((v - o.min) / (o.max - o.min)) * (W - L - R);
+    (o.lines || []).forEach((ln) => {
+      el("line", { x1: x(ln.v), x2: x(ln.v), y1: T, y2: H - B, stroke: COL.ref, "stroke-dasharray": "4 3" }, svg);
+      el("text", { x: x(ln.v), y: H - B + 28, "text-anchor": "middle", class: "muted" }, svg, ln.label);
+    });
+    for (let t = o.min; t <= o.max + 1e-9; t += o.tick) el("text", { x: x(t), y: H - B + 14, "text-anchor": "middle", class: "muted" }, svg, o.fmt(t));
+    rowsIn.forEach((r, i) => {
+      const cy = T + rowH * i + rowH / 2;
+      el("text", { x: L - 8, y: cy + 4, "text-anchor": "end" }, svg, r.label);
+      if (Number.isFinite(r.lo)) el("line", { x1: x(r.lo), x2: x(r.hi), y1: cy, y2: cy, stroke: COL.cls, "stroke-width": 3 }, svg);
+      if (Number.isFinite(r.v)) el("circle", { cx: x(r.v), cy, r: 6, fill: COL.cls }, svg);
+      if (Number.isFinite(r.ref)) el("path", { d: "M" + x(r.ref) + " " + (cy - 8) + " l7 8 l-7 8 l-7 -8 z", fill: "none", stroke: COL.ai, "stroke-width": 2 }, svg);
+    });
+    // legend
+    el("circle", { cx: W - 190, cy: 8, r: 5, fill: COL.cls }, svg); el("text", { x: W - 180, y: 12 }, svg, "class");
+    el("path", { d: "M" + (W - 120) + " 2 l6 6 l-6 6 l-6 -6 z", fill: "none", stroke: COL.ai, "stroke-width": 2 }, svg); el("text", { x: W - 108, y: 12 }, svg, "paper (Denmark)");
+  }
+
+  // grouped bars: ratings by decile for authentic vs AI (shares within truth)
+  function ratingBars(host, items) {
+    const W = 560, H = 260, L = 40, R = 12, T = 14, B = 52;
+    const svg = canvas(host, W, H);
+    const nb = 10, share = { 0: new Array(nb).fill(0), 1: new Array(nb).fill(0) }, tot = { 0: 0, 1: 0 };
+    for (const it of items) { const i = Math.min(nb - 1, Math.floor(it.score / 10)); share[it.ai][i]++; tot[it.ai]++; }
+    for (const k of [0, 1]) share[k] = share[k].map((c) => (tot[k] ? c / tot[k] : 0));
+    const ymax = Math.max(0.1, ...share[0], ...share[1]);
+    const bw = (W - L - R) / nb, y = (s) => H - B - (s / ymax) * (H - B - T);
+    for (let i = 0; i < nb; i++) {
+      el("rect", { x: L + i * bw + 2, y: y(share[0][i]), width: bw / 2 - 2, height: H - B - y(share[0][i]), fill: COL.real }, svg);
+      el("rect", { x: L + i * bw + bw / 2, y: y(share[1][i]), width: bw / 2 - 2, height: H - B - y(share[1][i]), fill: COL.ai }, svg);
+      el("text", { x: L + i * bw + bw / 2, y: H - B + 14, "text-anchor": "middle", class: "muted" }, svg, i * 10 + "–" + (i === 9 ? 100 : i * 10 + 9));
+    }
+    el("line", { x1: L, x2: W - R, y1: H - B, y2: H - B, stroke: COL.ref }, svg);
+    el("text", { x: (W + L) / 2, y: H - 22, "text-anchor": "middle", class: "muted" }, svg, "rating (0 = certainly authentic, 100 = certainly AI)");
+    const mA = RA.mean(items.filter((i) => i.ai === 0).map((i) => i.score)), mI = RA.mean(items.filter((i) => i.ai === 1).map((i) => i.score));
+    el("text", { x: L, y: H - 4, style: "fill:" + COL.real }, svg, "authentic: class mean " + (Number.isFinite(mA) ? mA.toFixed(1) : "–") + " (paper " + bench.mean_score_authentic.toFixed(1) + ")");
+    el("text", { x: L + 270, y: H - 4, style: "fill:" + COL.ai }, svg, "AI: class mean " + (Number.isFinite(mI) ? mI.toFixed(1) : "–") + " (paper " + bench.mean_score_ai.toFixed(1) + ")");
+    el("text", { x: L - 6, y: y(ymax) + 4, "text-anchor": "end", class: "muted" }, svg, Math.round(ymax * 100) + "%");
+  }
+
+  // ---- render ---------------------------------------------------------------------------
+  function render() {
+    const items = RA.enrich(rows, manifest);
+    const resp = RA.byRespondent(items);
+    $("n-resp").textContent = resp.length;
+    $("n-rat").textContent = items.length;
+    $("status").textContent = revealed ? "answers revealed" : "collecting";
+    $("reveal").classList.toggle("hidden", revealed); $("hide").classList.toggle("hidden", !revealed);
+    $("pre").classList.toggle("hidden", revealed); $("post").classList.toggle("hidden", !revealed);
+    $("stat-brier").style.display = revealed ? "" : "none";
+    if (!revealed) {
+      histogram($("c-pre"), items.map((i) => i.score), { min: 0, max: 100, bin: 10, tick: 10, xlabel: "rating (0 = certainly authentic, 100 = certainly AI)" });
+      return;
+    }
+    $("brier-class").textContent = f3(RA.mean(resp.map((r) => r.brier)));
+
+    // 1. Brier per respondent
+    histogram($("c1"), resp.map((r) => r.brier), { min: 0, max: 0.9, bin: 0.05, tick: 0.1, fmt: (t) => t.toFixed(1), xlabel: "mean Brier score per respondent (lower = better)",
+      lines: [{ v: 0.25, label: "always 50", dash: "2 3" }, { v: bench.mean_brier, label: "paper " + bench.mean_brier.toFixed(2), color: COL.ai }, { v: 1 / 3, label: "random" , dash: "2 3"},
+              { v: RA.mean(resp.map((r) => r.brier)), label: "class", color: COL.cls, dash: "" }] });
+
+    // 2. Brier by context and 4. confidence by context
+    const rowsFor = (key, bkey) => CATS.concat(["All"]).map((c) => {
+      const sub = c === "All" ? items : items.filter((i) => i.category === c);
+      const stat = (s) => RA.mean(s.map((i) => i[key]));
+      const [lo, hi] = RA.bootstrapCI(sub, stat, 1000);
+      const ref = c === "All" ? (key === "brier" ? bench.mean_brier : bench.conf_all) : bench.by_category.find((r) => r.category === c)[bkey];
+      return { label: c, v: stat(sub), lo, hi, ref };
+    });
+    dotplot($("c2"), rowsFor("brier", "brier"), { min: 0.1, max: 0.5, tick: 0.1, fmt: (t) => t.toFixed(1), lines: [{ v: 0.25, label: "always 50" }, { v: 1 / 3, label: "random" }] });
+    dotplot($("c4"), rowsFor("conf", "conf"), { min: 20, max: 80, tick: 10, fmt: (t) => t, lines: [] });
+
+    // 3. ratings by truth
+    ratingBars($("c3"), items);
+
+    // 5. exploratory: images with the largest average error (needs at least 2 ratings)
+    const g = {};
+    for (const it of items) (g[it.image_id] = g[it.image_id] || []).push(it);
+    const pm = Object.fromEntries(bench.per_image.map((r) => [r.pair + "|" + r.ai, r.mean_score]));
+    const list = Object.entries(g).filter(([, a]) => a.length >= 2).map(([id, a]) => {
+      const m = byId[id];
+      return { m, n: a.length, mean: RA.mean(a.map((i) => i.score)), err: RA.mean(a.map((i) => Math.abs(i.score / 100 - m.ai))), paper: pm[m.pair + "|" + m.ai] };
+    }).sort((p, q) => q.err - p.err).slice(0, 6);
+    const host = $("c5"); host.innerHTML = "";
+    const t = document.createElement("table");
+    t.innerHTML = "<tr><th></th><th>Truth</th><th>Class mean rating</th><th>Paper mean rating</th><th>n (class)</th></tr>";
+    for (const r of list) {
+      const tr = document.createElement("tr");
+      const td0 = document.createElement("td"), im = document.createElement("img"); im.src = r.m.file; im.alt = ""; td0.appendChild(im);
+      const td1 = document.createElement("td"); td1.className = "tag " + (r.m.ai ? "ai" : "real"); td1.textContent = r.m.ai ? "AI" : "Authentic";
+      const c2 = document.createElement("td"); c2.textContent = r.mean.toFixed(0);
+      const c3 = document.createElement("td"); c3.textContent = r.paper != null ? r.paper.toFixed(0) : "–";
+      const c4 = document.createElement("td"); c4.textContent = r.n;
+      tr.append(td0, td1, c2, c3, c4); t.appendChild(tr);
+    }
+    host.appendChild(t);
+  }
+
+  await refresh();
+  if (!demo) setInterval(refresh, 3000);
+})();
+</script>
+</body>
+</html>

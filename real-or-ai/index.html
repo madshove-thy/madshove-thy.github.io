@@ -1,0 +1,192 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>Real or AI?</title>
+<link rel="icon" href="data:,">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<main>
+
+  <!-- 1. Intro -->
+  <section id="intro">
+    <h1>Real or AI?</h1>
+    <p>You will see <strong>seven images</strong>, one at a time. Some are AI-generated, some are authentic photographs.</p>
+    <ul>
+      <li><strong>All images are meant to show real events.</strong> Each is either an authentic photograph of the event or an AI-generated image of it.</li>
+      <li>Imagine you saw the image while scrolling on social media, posted by someone you do not know.</li>
+      <li>For each image, rate <strong>how likely it is that it was generated with AI</strong>, from 0 (certainly authentic) to 100 (certainly AI-generated).</li>
+      <li>Give your <strong>immediate impression</strong>. About five seconds per image. Please do not talk to your neighbors.</li>
+    </ul>
+    <p class="muted">Anonymous: no names or accounts. Your seven ratings, how long you looked at each image and a random session code are saved for class use only.</p>
+    <p id="demo-note" class="muted hidden">Demo mode: nothing is sent anywhere.</p>
+    <p><button id="start">Start</button></p>
+  </section>
+
+  <!-- 2. Task -->
+  <section id="task" class="hidden">
+    <div class="progress"><div id="bar"></div></div>
+    <p class="muted" id="counter"></p>
+    <img id="stim" class="stim" alt="Image to judge">
+    <p class="caption" id="caption"></p>
+    <p><strong>How likely is it that this image was generated with AI?</strong></p>
+    <div class="slider-wrap">
+      <input type="range" id="slider" min="0" max="100" step="1" value="50" class="untouched" aria-label="Likelihood that the image is AI-generated, 0 to 100">
+      <div class="anchors"><span>0 certainly authentic</span><span>50 cannot tell</span><span>100 certainly AI</span></div>
+    </div>
+    <div class="value" id="value">&nbsp;</div>
+    <p><button id="next" disabled>Next</button></p>
+  </section>
+
+  <!-- 3. Done -->
+  <section id="done" class="hidden">
+    <h1>Thank you</h1>
+    <p id="status">Sending your answers&hellip;</p>
+    <p><button id="retry" class="secondary hidden">Try sending again</button></p>
+    <div id="wait" class="card hidden">
+      <strong>Your own result appears here when the teacher reveals the answers.</strong>
+      <p class="muted">Keep this page open. Please do not tell others which images were AI-generated.</p>
+    </div>
+    <div id="reveal" class="hidden"></div>
+  </section>
+
+</main>
+
+<script src="config.js"></script>
+<script src="common.js"></script>
+<script src="net.js"></script>
+<script>
+(async function () {
+  "use strict";
+  const $ = (id) => document.getElementById(id);
+  const cfg = window.RA_CONFIG;
+  const params = new URLSearchParams(location.search);
+  const cohort = (params.get("cohort") || cfg.COHORT || "class12").toLowerCase().replace(/[^a-z0-9_-]/g, "").slice(0, 30);
+  const testMode = params.get("test") === "1";   // test mode never locks the page after one run
+  const KEY = "realorai:" + cohort;
+
+  const [manifest, bench] = await Promise.all([
+    fetch("data/images.json").then((r) => r.json()),
+    fetch("data/paper_benchmarks.json").then((r) => r.json()),
+  ]);
+  if (!cfg.ENDPOINT) $("demo-note").classList.remove("hidden");
+
+  const show = (id) => { for (const s of ["intro", "task", "done"]) $(s).classList.toggle("hidden", s !== id); window.scrollTo(0, 0); };
+  const rid = () => Array.from(crypto.getRandomValues(new Uint8Array(8)), (b) => b.toString(16).padStart(2, "0")).join("");
+
+  // restore a finished session so a page reload does not let anyone play twice
+  let saved = null;
+  try { saved = JSON.parse(localStorage.getItem(KEY) || "null"); } catch (e) {}
+  if (saved && saved.done && !testMode) { return finish(saved); }
+
+  // ---- state ----
+  let plan, ratings = [], idx = 0, shownAt = 0, touched = false, session = rid();
+
+  $("start").onclick = () => {
+    plan = RA.drawSeven(manifest, bench);
+    ratings = []; idx = 0;
+    show("task"); showImage();
+  };
+
+  function showImage() {
+    const m = plan[idx];
+    $("bar").style.width = (idx / 7) * 100 + "%";
+    $("counter").textContent = "Image " + (idx + 1) + " of 7";
+    $("stim").src = m.file;
+    $("caption").textContent = m.caption || "";
+    const s = $("slider"); s.value = 50; s.classList.add("untouched");
+    $("value").innerHTML = "&nbsp;"; $("next").disabled = true; touched = false;
+    $("next").textContent = idx === 6 ? "Finish" : "Next";
+    shownAt = 0;
+    $("stim").onload = () => { shownAt = performance.now(); };   // start the clock when the image is visible
+  }
+
+  function touch() {
+    touched = true;
+    $("slider").classList.remove("untouched");
+    $("value").textContent = $("slider").value;
+    $("next").disabled = false;
+  }
+  $("slider").addEventListener("input", touch);
+  $("slider").addEventListener("pointerup", touch);   // tapping exactly on 50 fires no "input" event
+
+  $("next").onclick = () => {
+    if (!touched) return;
+    const m = plan[idx];
+    ratings.push({ task: idx + 1, image_id: m.id, score: +$("slider").value,
+                   seconds: shownAt ? Math.round((performance.now() - shownAt) / 100) / 10 : null });
+    idx++;
+    if (idx < 7) showImage(); else submit();
+  };
+
+  async function submit() {
+    const rec = { session, cohort, ratings, done: true };
+    try { localStorage.setItem(KEY, JSON.stringify(rec)); } catch (e) {}
+    await finish(rec);
+  }
+
+  async function sendOnce(rec) {
+    $("status").textContent = "Sending your answers…";
+    $("retry").classList.add("hidden");
+    try {
+      const r = await RA_NET.post({ action: "submit", cohort: rec.cohort, session: rec.session, ratings: rec.ratings });
+      if (r && r.ok === false) throw new Error(r.error || "rejected");
+      $("status").textContent = r && r.demo ? "Demo mode: answers were not sent." : "Your answers are in.";
+      return true;
+    } catch (e) {
+      $("status").textContent = "Could not send your answers. Check your connection and try again.";
+      $("retry").classList.remove("hidden");
+      return false;
+    }
+  }
+
+  async function finish(rec) {
+    show("done");
+    $("retry").onclick = () => finish(rec);
+    const ok = await sendOnce(rec);
+    if (!ok) return;
+    $("wait").classList.remove("hidden");
+    // poll until the teacher reveals (demo mode: reveal at once)
+    const poll = async () => {
+      let revealed = !cfg.ENDPOINT;
+      if (cfg.ENDPOINT) {
+        try { const s = await RA_NET.get({ action: "state", cohort: rec.cohort }); revealed = !!(s && s.revealed); } catch (e) {}
+      }
+      if (revealed) return renderReveal(rec);
+      setTimeout(poll, 4000);
+    };
+    poll();
+  }
+
+  function renderReveal(rec) {
+    const byId = Object.fromEntries(manifest.map((m) => [m.id, m]));
+    const rows = rec.ratings.map((r) => ({ r, m: byId[r.image_id] }));
+    const briers = rows.map(({ r, m }) => RA.brier(r.score, m.ai));
+    const myBrier = RA.mean(briers);
+    $("wait").classList.add("hidden");
+    const el = $("reveal"); el.classList.remove("hidden"); el.innerHTML = "";
+    const h = document.createElement("h2"); h.textContent = "Your result"; el.appendChild(h);
+    const p = document.createElement("p");
+    p.innerHTML = "Your mean Brier score: <strong>" + myBrier.toFixed(3) + "</strong> (lower is better). " +
+      "Always answering 50 scores 0.250. Random guessing scores about 0.333. Danish respondents in the paper averaged " +
+      bench.mean_brier.toFixed(3) + ".";
+    el.appendChild(p);
+    const t = document.createElement("table");
+    t.innerHTML = "<tr><th></th><th>Your rating</th><th>Truth</th><th>Brier</th></tr>";
+    rows.forEach(({ r, m }, i) => {
+      const tr = document.createElement("tr");
+      const td0 = document.createElement("td"); const im = document.createElement("img"); im.src = m.file; im.alt = ""; td0.appendChild(im);
+      const td1 = document.createElement("td"); td1.textContent = r.score;
+      const td2 = document.createElement("td"); td2.className = "tag " + (m.ai ? "ai" : "real"); td2.textContent = m.ai ? "AI" : "Authentic";
+      const td3 = document.createElement("td"); td3.textContent = briers[i].toFixed(2);
+      tr.append(td0, td1, td2, td3); t.appendChild(tr);
+    });
+    el.appendChild(t);
+  }
+})();
+</script>
+</body>
+</html>
